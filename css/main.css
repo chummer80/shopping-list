@@ -70,7 +70,7 @@ header {
 	bottom: 1em;
 	flex-grow: 1;
 	box-shadow: 3px 3px grey;
-	background-image: -webkit-linear-gradient(top, dodgerblue 0%, lightblue 100%);
+	background-image: -webkit-linear-gradient(top, dodgerblue 0%, skyblue 100%);
 }
 
 /* hide the scrollbar but still allow scrolling */
@@ -101,6 +101,9 @@ header {
 	margin-right: 0.7em;
 	flex-grow: 1;
 	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .delete_item_image {
