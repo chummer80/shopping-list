@@ -24,6 +24,7 @@ body {
 	background-color: lightgreen;
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
+	padding: 0.2em;
 }
 
 header {
@@ -31,8 +32,6 @@ header {
 	border-radius: 15px;
 	flex-shrink: 0;
 	box-shadow: 3px 3px grey;
-	
-
 	background-image: -webkit-linear-gradient(top, royalblue 0%, dodgerblue 100%);
 }
 
@@ -92,10 +91,6 @@ header {
 	box-shadow: 3px 3px grey;
 }
 
-.item_checkbox {
-	flex-shrink: 0;
-}
-
 .item_name {
 	margin-left: 0.7em;
 	margin-right: 0.7em;
@@ -106,7 +101,17 @@ header {
 	text-overflow: ellipsis;
 }
 
-.delete_item_image {
+.list_item_icon {
 	flex-shrink: 0;
 	height: 80%;
+}
+
+.checkbox_blank_image {	
+}
+
+.checkbox_checked_image {
+	display: none;
+}
+
+.delete_item_image {	
 }
