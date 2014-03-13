@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header>
-		<h1>SHOPPING LIST</h1>
+		<h1 id="title">SHOPPING LIST</h1>
 		<div id="input_area">
 			<fieldset id="input_controls">
 				<input id="new_item_input" type="text" placeholder="Enter new shopping list item" name="new_item" autofocus>
@@ -19,7 +19,26 @@
 		</div>
 	</header>
 	<div id="list_area">
-		<div id="test">HI</div>
+		<div class="item_container">
+			<input class="item_checkbox" type="checkbox">
+			<span class="item_name">Item1</span>
+			<img class="delete_item_image" src="images/delete.png">
+		</div>
+		<div class="item_container">
+			<input class="item_checkbox" type="checkbox">
+			<span class="item_name">Item2</span>
+			<img class="delete_item_image" src="images/delete.png">
+		</div>
+		<div class="item_container">
+			<input class="item_checkbox" type="checkbox">
+			<span class="item_name">Item3</span>
+			<img class="delete_item_image" src="images/delete.png">
+		</div>
+		<div class="item_container">
+			<input class="item_checkbox" type="checkbox">
+			<span class="item_name">Item4</span>
+			<img class="delete_item_image" src="images/delete.png">
+		</div>
 	</div>
 </body>
 </html>

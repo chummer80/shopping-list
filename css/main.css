@@ -3,22 +3,37 @@
 }
 
 body {
-	width: 50em;
+	position: absolute;
+	top: 0%;
+	bottom: 0%;
+	left: 0%;
+	right: 0%;
+	width: 40em;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 1em;
 	margin-bottom: 1em;
 	text-align: center;
 	font-family: Verdana, Helvetica, Sans-Serif;
+	display: flex;
+	flex-direction: column;
 }
 
-h1 {
+#title {
 	font-size: 3em;
+	background-color: lightgreen;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
 }
 
 header {
-	border: 1px solid black;
+	/* border: 1px solid black; */
 	border-radius: 15px;
+	flex-shrink: 0;
+	box-shadow: 3px 3px grey;
+	
+
+	background-image: -webkit-linear-gradient(top, royalblue 0%, dodgerblue 100%);
 }
 
 #input_area {	
@@ -42,16 +57,20 @@ header {
 
 #add_item_button {
 	font-size: 1.5em;
+	border-radius: 15px;
 }
 
 #list_area {
-	border: 1px solid black;
+	/* border: 1px solid black; */
 	border-radius: 15px;
 	margin-top: 1em;
 	padding: 0.5em;
-	height: 30em;
+	min-height: 9em;
 	overflow: auto;
 	bottom: 1em;
+	flex-grow: 1;
+	box-shadow: 3px 3px grey;
+	background-image: -webkit-linear-gradient(top, dodgerblue 0%, lightblue 100%);
 }
 
 /* hide the scrollbar but still allow scrolling */
@@ -60,7 +79,31 @@ header {
 }
 
 
-#test {
-	height: 75em;
-	outline: red 1px solid;
+.item_container {	
+	height: 2em;
+	border: none;
+	border-radius: 15px;
+	background-color: white;
+	margin: 0.7em;
+	padding-left: 0.7em;
+	padding-right: 0.7em;
+	display: flex;
+	align-items: center;
+	box-shadow: 3px 3px grey;
+}
+
+.item_checkbox {
+	flex-shrink: 0;
+}
+
+.item_name {
+	margin-left: 0.7em;
+	margin-right: 0.7em;
+	flex-grow: 1;
+	text-align: left;
+}
+
+.delete_item_image {
+	flex-shrink: 0;
+	height: 80%;
 }
