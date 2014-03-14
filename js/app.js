@@ -53,9 +53,9 @@ $(document).ready(function () {
 			return 0;
 		});
 		
-		// replace existing item text with sorted item names
 		var itemContainers = $('.item_container');
 		if (itemContainers.length == listArray.length) {
+			// replace existing item text with sorted item names
 			var i = 0;
 			itemContainers.each(function() {
 				$(this).children('.item_name').text(listArray[i].name);
@@ -76,7 +76,10 @@ $(document).ready(function () {
 			listArray.pop();
 		}
 		// remove all item containers from the DOM
-		$('.item_container').remove();
+		$('.item_container').slideUp(100, function() {
+		
+			$('.item_container').remove();
+		});
 	});
 	
 		
