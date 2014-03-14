@@ -52,6 +52,7 @@ header {
 	display: block;
 	margin-bottom: 1em;
 	font-size: 1.5em;
+	padding-left: 0.3em;
 }
 
 #add_item_button {
@@ -101,9 +102,18 @@ header {
 	text-overflow: ellipsis;
 }
 
+.crossed-off {
+	text-decoration: line-through;
+	color: grey;
+}
+
 .list_item_icon {
 	flex-shrink: 0;
 	height: 80%;
+}
+
+.checkbox_image:hover {
+	background-color: lightgreen;
 }
 
 .checkbox_blank_image {	
@@ -113,5 +123,10 @@ header {
 	display: none;
 }
 
-.delete_item_image {	
+.delete_item_image:hover {
+	height: 90%;
+}
+
+.delete_item_image:active {
+	height: 80%;
 }

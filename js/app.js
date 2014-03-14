@@ -5,7 +5,7 @@ $(document).ready(function () {
 	var CHECKBOX_CHECKED_IMAGE_PATH = 'images/checkbox_checked.png';
 	var DELETE_IMAGE_PATH = 'images/delete.png';
 	
-			
+
 	$('#add_item_button').click(function() {	
 		addItem();
 		$('#new_item_input').val('');
@@ -23,19 +23,6 @@ $(document).ready(function () {
 			// This is so that the user never has to re-click the text box to enter new items
 			$(this).focus();
 		});
-				
-	function buttonEnlarge() {
-		$(this).css('height', '90%');
-	}
-	function buttonShrink() {
-		$(this).css('height', '80%');
-	}
-	function checkboxMouseEnter() {
-		$(this).css('background-color', 'lightgreen');
-	}	
-	function checkboxMouseLeave() {
-		$(this).css('background-color', 'white');
-	}
 	
 	function addItem() {
 		var newItemName = $('#new_item_input').val();
@@ -49,13 +36,13 @@ $(document).ready(function () {
 			$('<img>')
 				.attr('src', CHECKBOX_BLANK_IMAGE_PATH)
 				.addClass('list_item_icon')
+				.addClass('checkbox_image')
 				.addClass('checkbox_blank_image')
-				.hover(checkboxMouseEnter, checkboxMouseLeave)
 				.click(function() {
+					// replace this blank checkbox with a checked one.
 					$(this).hide();
 					$(this).siblings('.checkbox_checked_image').show();
-					$(this).siblings('.item_name').css('text-decoration', 'line-through');
-					$(this).siblings('.item_name').css('color', 'gray');
+					$(this).siblings('.item_name').addClass('crossed-off');
 				})
 				.appendTo(newItem);
 			
@@ -63,13 +50,13 @@ $(document).ready(function () {
 			$('<img>')
 				.attr('src', CHECKBOX_CHECKED_IMAGE_PATH)
 				.addClass('list_item_icon')
+				.addClass('checkbox_image')
 				.addClass('checkbox_checked_image')
-				.hover(checkboxMouseEnter, checkboxMouseLeave)
 				.click(function() {
+					// replace this checked checkbox with a blank one.
 					$(this).hide();
 					$(this).siblings('.checkbox_blank_image').show();
-					$(this).siblings('.item_name').css('text-decoration', 'none');
-					$(this).siblings('.item_name').css('color', 'black');
+					$(this).siblings('.item_name').removeClass('crossed-off');
 				})
 				.appendTo(newItem);
 			
@@ -84,9 +71,6 @@ $(document).ready(function () {
 				.attr('src', DELETE_IMAGE_PATH)
 				.addClass('list_item_icon')
 				.addClass('delete_item_image')
-				.hover(buttonEnlarge, buttonShrink)
-				.mousedown(buttonEnlarge)
-				.mouseup(buttonShrink)
 				.click(function() {
 					// remove the entire item and its container from the DOM
 					var listItem = $(this).parent();
