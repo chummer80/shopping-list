@@ -3,7 +3,7 @@ $(document).ready(function () {
 	var ENTER_KEY_CODE = 13;
 	var CHECKBOX_BLANK_IMAGE_PATH = 'images/checkbox_blank.png';
 	var CHECKBOX_CHECKED_IMAGE_PATH = 'images/checkbox_checked.png';
-	var DELETE_IMAGE_PATH = 'images/delete.png';
+	var DELETE_IMAGE_PATH = 'images/delete_icon.png';
 	
 	// This will be an array of objects which have 2 properties: name and crossedOff
 	var listArray = [];
