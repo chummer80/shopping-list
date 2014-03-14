@@ -32,7 +32,11 @@ header {
 	border-radius: 15px;
 	flex-shrink: 0;
 	box-shadow: 3px 3px grey;
-	background-image: -webkit-linear-gradient(top, royalblue 0%, dodgerblue 100%);
+	background-image: -o-linear-gradient(bottom, royalblue 0%, dodgerblue 100%);
+	background-image: -moz-linear-gradient(bottom, royalblue 0%, dodgerblue 100%);
+	background-image: -webkit-linear-gradient(bottom, royalblue 0%, dodgerblue 100%);
+	background-image: -ms-linear-gradient(bottom, royalblue 0%, dodgerblue 100%);
+	background-image: linear-gradient(to bottom, royalblue 0%, dodgerblue 100%);
 }
 
 #input_area {	
@@ -70,7 +74,11 @@ header {
 	bottom: 1em;
 	flex-grow: 1;
 	box-shadow: 3px 3px grey;
-	background-image: -webkit-linear-gradient(top, dodgerblue 0%, skyblue 100%);
+	background-image: -o-linear-gradient(bottom, dodgerblue 0%, skyblue 100%);
+	background-image: -moz-linear-gradient(bottom, dodgerblue 0%, skyblue 100%);
+	background-image: -webkit-linear-gradient(bottom, dodgerblue 0%, skyblue 100%);
+	background-image: -ms-linear-gradient(bottom, dodgerblue 0%, skyblue 100%);
+	background-image: linear-gradient(to bottom, dodgerblue 0%, skyblue 100%);
 }
 
 /* hide the scrollbar but still allow scrolling */

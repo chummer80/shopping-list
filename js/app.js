@@ -26,7 +26,7 @@ $(document).ready(function () {
 		});
 	
 	function addItem() {
-		var newItemName = $('#new_item_input').val();
+		var newItemName = $.trim($('#new_item_input').val());
 		if (newItemName) {
 			if (newItemName in listSet) {
 				alert(newItemName + ' is already on the list!');
