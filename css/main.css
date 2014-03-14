@@ -125,7 +125,7 @@ header {
 	text-overflow: ellipsis;
 }
 
-.crossed-off {
+.crossed_off {
 	text-decoration: line-through;
 	color: grey;
 }

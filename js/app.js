@@ -5,14 +5,21 @@ $(document).ready(function () {
 	var CHECKBOX_CHECKED_IMAGE_PATH = 'images/checkbox_checked.png';
 	var DELETE_IMAGE_PATH = 'images/delete.png';
 	
-	var listArray = new Array();
+	// This will be an array of objects which have 2 properties: name and crossedOff
+	var listArray = [];
+		
+	
+	/************************
+		EVENT HANDLERS
+	************************/
+	
 	
 	$('#new_item_input')
 		.keydown(function(event) {
 			if (event.which == ENTER_KEY_CODE) {
 				var newItemName = $.trim($('#new_item_input').val());
-				if (isNameValid(newItemName)) {
-					addItem(newItemName);
+				if (isNameValid(listArray, newItemName)) {
+					addItem(listArray, newItemName);
 				}
 				$('#new_item_input').val('');
 			}
@@ -25,22 +32,34 @@ $(document).ready(function () {
 
 	$('#add_item_button').click(function() {	
 		var newItemName = $.trim($('#new_item_input').val());
-		if (isNameValid(newItemName)) {
-			addItem(newItemName);
+		if (isNameValid(listArray, newItemName)) {
+			addItem(listArray, newItemName);
 		}
 		$('#new_item_input').val('');
 	});
 	
 	$('#sort_button').click(function() {
-		// sort list array
-		listArray.sort();
+		// sort list array by item name
+		listArray.sort(function(a,b) {
+			var nameA = a.name.toLowerCase();
+			var nameB = b.name.toLowerCase();
+			
+			if (nameA > nameB) {
+				return 1;
+			}
+			if (nameA < nameB) {
+				return -1;
+			}
+			return 0;
+		});
 		
 		// replace existing item text with sorted item names
 		var itemContainers = $('.item_container');
 		if (itemContainers.length == listArray.length) {
 			var i = 0;
 			itemContainers.each(function() {
-				$(this).children('.item_name').text(listArray[i]);
+				$(this).children('.item_name').text(listArray[i].name);
+				setCrossedOff($(this), listArray[i].crossedOff);
 				i++;
 			});
 			scrollToBottomOfList();
@@ -60,21 +79,53 @@ $(document).ready(function () {
 		$('.item_container').remove();
 	});
 	
-	function isNameValid(newItemName) {		
-		if (newItemName) {
-			if (listArray.indexOf(newItemName) == -1) {
-				return true;
+		
+	/************************
+		HELPER FUNCTIONS
+	************************/
+	
+	
+	// Search the array for an item with a given name. If found, return the index.
+	function indexOf(array, itemName) {
+		var index = 0;
+		while (index < array.length) {
+			if (array[index].name == itemName) {
+				return index;
 			}
-			else {
+			index++;
+		}
+		return -1;
+	}
+	
+	function isNameValid(array, newItemName) {		
+		if (newItemName) {
+			if (indexOf(array, newItemName) >= 0) {
 				alert(newItemName + ' is already on the list!');
 				return false;
+			}
+			else {
+				return true;
 			}
 		}
 	}
 	
-	function addItem(newItemName) {		
-		// item isn't in the list yet, add it.		
-		listArray.push(newItemName);
+	function setCrossedOff(itemContainer, crossedOff) {
+		if (crossedOff) {
+			itemContainer.children('.checkbox_blank_image').hide();
+			itemContainer.children('.checkbox_checked_image').show();
+			itemContainer.children('.item_name').addClass('crossed_off');
+		}
+		else {
+			itemContainer.children('.checkbox_checked_image').hide();
+			itemContainer.children('.checkbox_blank_image').show();
+			itemContainer.children('.item_name').removeClass('crossed_off');
+		}
+	}
+	
+	function addItem(array, newItemName) {		
+		// item isn't in the list yet, add it.
+		var newItemArrayElement = {name: newItemName, crossedOff: false};
+		array.push(newItemArrayElement);
 		
 		// construct a new item container and then insert it into the list			
 		var newItemContainer = $('<div></div>')
@@ -88,10 +139,9 @@ $(document).ready(function () {
 			.addClass('checkbox_image')
 			.addClass('checkbox_blank_image')
 			.click(function() {
-				// replace this blank checkbox with a checked one.
-				$(this).hide();
-				$(this).siblings('.checkbox_checked_image').show();
-				$(this).siblings('.item_name').toggleClass('crossed-off');
+				var itemIndex = indexOf(array, $(this).siblings('.item_name').text());
+				array[itemIndex].crossedOff = true;
+				setCrossedOff($(this).parent(), true);
 			})
 			.appendTo(newItemContainer);
 		
@@ -102,10 +152,9 @@ $(document).ready(function () {
 			.addClass('checkbox_image')
 			.addClass('checkbox_checked_image')
 			.click(function() {
-				// replace this checked checkbox with a blank one.
-				$(this).hide();
-				$(this).siblings('.checkbox_blank_image').show();
-				$(this).siblings('.item_name').toggleClass('crossed-off');
+				var itemIndex = indexOf(array, $(this).siblings('.item_name').text());
+				array[itemIndex].crossedOff = false;
+				setCrossedOff($(this).parent(), false);
 			})
 			.appendTo(newItemContainer);
 		
@@ -123,9 +172,9 @@ $(document).ready(function () {
 			.click(function() {
 				// remove this item from the array of list items first
 				var removeItemName = $(this).siblings('.item_name').text();
-				var removeItemIndex = listArray.indexOf(removeItemName);
-				listArray.splice(removeItemIndex, 1);
-				//console.log(listArray.toString());
+				var removeItemIndex = indexOf(array, removeItemName);
+				array.splice(removeItemIndex, 1);
+				//console.log(array.name.toString());
 				
 				// remove the entire item container from the DOM
 				var listItem = $(this).parent();
