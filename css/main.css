@@ -1,5 +1,5 @@
 * {
-	/*outline: red 1px solid; */
+	/* outline: red 1px solid;  */
 }
 
 body {
@@ -40,13 +40,15 @@ header {
 }
 
 #input_area {	
-	height: 7em;
 	width: 100%;
 	padding-top: 2em;
-	padding-bottom: 2em;
 }
 
 #input_controls {
+}
+
+#list_manipulation_controls {
+	margin: 1em;	
 }
 
 #new_item_input {
@@ -59,9 +61,22 @@ header {
 	padding-left: 0.3em;
 }
 
-#add_item_button {
+.button {
 	font-size: 1.5em;
 	border-radius: 15px;
+}
+
+#add_item_button {
+}
+
+
+
+#sort_button {
+	float: left;
+}
+
+#clear_button {
+	float: right;
 }
 
 #list_area {
