@@ -124,6 +124,7 @@ header {
 	overflow: hidden;
 	line-height: 2em;
 	text-overflow: ellipsis;
+	font-family: Courier, monospace;
 }
 
 .crossed_off {
