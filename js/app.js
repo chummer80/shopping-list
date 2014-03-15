@@ -138,6 +138,7 @@ $(document).ready(function () {
 		// add blank checkbox to the item
 		$('<img>')
 			.attr('src', CHECKBOX_BLANK_IMAGE_PATH)
+			.attr('alt', "blank checkbox")
 			.addClass('list_item_icon')
 			.addClass('checkbox_image')
 			.addClass('checkbox_blank_image')
@@ -151,6 +152,7 @@ $(document).ready(function () {
 		// add checked checkbox to the item
 		$('<img>')
 			.attr('src', CHECKBOX_CHECKED_IMAGE_PATH)
+			.attr('alt', "checked checkbox")
 			.addClass('list_item_icon')
 			.addClass('checkbox_image')
 			.addClass('checkbox_checked_image')
@@ -170,6 +172,7 @@ $(document).ready(function () {
 		// add delete button to the item
 		$('<img>')
 			.attr('src', DELETE_IMAGE_PATH)
+			.attr('alt', "delete button image")
 			.addClass('list_item_icon')
 			.addClass('delete_item_image')
 			.click(function() {
