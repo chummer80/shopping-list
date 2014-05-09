@@ -22,15 +22,6 @@ function localStorageList() {
 		return localStorage.length;
 	};
 	
-	this.indexOf = function(itemName) {
-		for (var i = 0; i < this.getLength(); i++) {
-			if (this.getName(i) == itemName) {
-				return i;
-			}
-		}
-		return -1;	// return -1 to indicate item was not found
-	};
-	
 	this.addItem = function(itemName) {
 		var item = {
 			name: itemName,
@@ -117,3 +108,6 @@ function localStorageList() {
 		localStorage.clear();
 	};
 }
+
+// This class inherits from pure virtual class shoppingList
+localStorageList.prototype = shoppingList;
