@@ -5,23 +5,17 @@ $(document).ready(function () {
 	var CHECKBOX_CHECKED_IMAGE_PATH = 'images/checkbox_checked.png';
 	var DELETE_IMAGE_PATH = 'images/delete_icon.png';
 	
-	// This will be an array of objects which have 2 properties: name and crossedOff
-	var listArray = [];
-		
+	// Use local storage if it is available. Otherwise use a regular array.
+	var list = (typeof(Storage) === "undefined") ? new arrayList() : new localStorageList();
 	
 	/************************
 		EVENT HANDLERS
 	************************/
 	
-	
 	$('#new_item_input')
 		.keydown(function(event) {
 			if (event.which == ENTER_KEY_CODE) {
-				var newItemName = $.trim($('#new_item_input').val());
-				if (isNameValid(listArray, newItemName)) {
-					addItem(listArray, newItemName);
-				}
-				$('#new_item_input').val('');
+				$('#add_item_button').click();
 			}
 		})
 		.focusout(function() {
@@ -32,87 +26,66 @@ $(document).ready(function () {
 
 	$('#add_item_button').click(function() {	
 		var newItemName = $.trim($('#new_item_input').val());
-		if (isNameValid(listArray, newItemName)) {
-			addItem(listArray, newItemName);
+		if (isNameValid(list, newItemName)) {
+			list.addItem(newItemName);
+			addItemDOM(list, newItemName);
 		}
 		$('#new_item_input').val('');
 	});
 	
 	$('#sort_button').click(function() {
 		// sort list array by item name
-		listArray.sort(function(a,b) {
-			var nameA = a.name.toLowerCase();
-			var nameB = b.name.toLowerCase();
-			
-			if (nameA > nameB) {
-				return 1;
-			}
-			if (nameA < nameB) {
-				return -1;
-			}
-			return 0;
-		});
+		list.sort();
 		
 		var itemContainers = $('.item_container');
-		if (itemContainers.length == listArray.length) {
+		if (itemContainers.length == list.getLength()) {
 			// replace existing item text with sorted item names
 			var i = 0;
 			itemContainers.each(function() {
-				$(this).children('.item_name').text(listArray[i].name);
-				setCrossedOff($(this), listArray[i].crossedOff);
+				$(this).children('.item_name').text(list.getName(i));
+				setCrossedOffDOM($(this), list.getCrossedOff(i));
 				i++;
 			});
 			scrollToBottomOfList();
 		}
 		else {
-			console.log('Error sorting: list length (' + listArray.length + 
+			console.log('Error sorting: list length (' + list.getLength() + 
 				') does not match number of containers (' + itemContainers.length + ')');
 		}
 	});
 	
 	$('#clear_button').click(function() {
-		// pop all array elements
-		while (listArray.length > 0) {
-			listArray.pop();
-		}
+		// remove all items from storage
+		list.clear();
+
 		// remove all item containers from the DOM
 		$('.item_container').slideUp(100, function() {
-		
 			$('.item_container').remove();
 		});
 	});
 	
-		
 	/************************
 		HELPER FUNCTIONS
 	************************/
 	
-	
-	// Search the array for an item with a given name. If found, return the index.
-	function indexOf(array, itemName) {
-		var index = 0;
-		while (index < array.length) {
-			if (array[index].name == itemName) {
-				return index;
-			}
-			index++;
-		}
-		return -1;
-	}
-	
-	function isNameValid(array, newItemName) {		
-		if (newItemName) {
-			if (indexOf(array, newItemName) >= 0) {
-				alert(newItemName + ' is already on the list!');
+	// name is valid if it is not blank and if it is unique
+	function isNameValid(list, itemName) {		
+		if (itemName) {
+			if (list.indexOf(itemName) >= 0) {
+				alert(itemName + ' is already on the list!');
 				return false;
 			}
 			else {
 				return true;
 			}
 		}
+		else {
+			return false;
+		}
 	}
 	
-	function setCrossedOff(itemContainer, crossedOff) {
+	// visually cross off an item from the shopping list
+	function setCrossedOffDOM(itemContainer, crossedOff) {
 		if (crossedOff) {
 			itemContainer.children('.checkbox_blank_image').hide();
 			itemContainer.children('.checkbox_checked_image').show();
@@ -125,11 +98,7 @@ $(document).ready(function () {
 		}
 	}
 	
-	function addItem(array, newItemName) {		
-		// item isn't in the list yet, add it.
-		var newItemArrayElement = {name: newItemName, crossedOff: false};
-		array.push(newItemArrayElement);
-		
+	function addItemDOM(list, newItemName) {		
 		// construct a new item container and then insert it into the list			
 		var newItemContainer = $('<div></div>')
 			.addClass('item_container')
@@ -138,26 +107,26 @@ $(document).ready(function () {
 		// add blank checkbox to the item
 		$('<img>')
 			.attr('src', CHECKBOX_BLANK_IMAGE_PATH)
+			.attr('alt', "blank checkbox")
 			.addClass('list_item_icon')
 			.addClass('checkbox_image')
 			.addClass('checkbox_blank_image')
 			.click(function() {
-				var itemIndex = indexOf(array, $(this).siblings('.item_name').text());
-				array[itemIndex].crossedOff = true;
-				setCrossedOff($(this).parent(), true);
+				list.setCrossedOff($(this).siblings('.item_name').text(), true);
+				setCrossedOffDOM($(this).parent(), true);
 			})
 			.appendTo(newItemContainer);
 		
 		// add checked checkbox to the item
 		$('<img>')
 			.attr('src', CHECKBOX_CHECKED_IMAGE_PATH)
+			.attr('alt', "checked checkbox")
 			.addClass('list_item_icon')
 			.addClass('checkbox_image')
 			.addClass('checkbox_checked_image')
 			.click(function() {
-				var itemIndex = indexOf(array, $(this).siblings('.item_name').text());
-				array[itemIndex].crossedOff = false;
-				setCrossedOff($(this).parent(), false);
+				list.setCrossedOff($(this).siblings('.item_name').text(), false);
+				setCrossedOffDOM($(this).parent(), false);
 			})
 			.appendTo(newItemContainer);
 		
@@ -170,24 +139,25 @@ $(document).ready(function () {
 		// add delete button to the item
 		$('<img>')
 			.attr('src', DELETE_IMAGE_PATH)
+			.attr('alt', "delete button image")
 			.addClass('list_item_icon')
 			.addClass('delete_item_image')
 			.click(function() {
 				// remove this item from the array of list items first
 				var removeItemName = $(this).siblings('.item_name').text();
-				var removeItemIndex = indexOf(array, removeItemName);
-				array.splice(removeItemIndex, 1);
-				//console.log(array.name.toString());
+				list.removeItem(removeItemName);
 				
 				// remove the entire item container from the DOM
-				var listItem = $(this).parent();
-				listItem.slideUp(100, function() {
-					listItem.remove();			
+				var itemContainer = $(this).parent();
+				itemContainer.slideUp(100, function() {
+					itemContainer.remove();			
 				});						
 			})
 			.appendTo(newItemContainer);
 			
 		scrollToBottomOfList();
+		
+		return newItemContainer;
 	}
 	
 	function scrollToBottomOfList() {
@@ -196,5 +166,21 @@ $(document).ready(function () {
 		var innerheight = $('#list_area').innerHeight();
 		var scrolltop_bottom = scrollheight - innerheight;
 		$('#list_area').animate({scrollTop: scrolltop_bottom}, 100);
+	}
+	
+	function populateStoredList(list) {
+		for (var i = 0; i < list.getLength(); i++) {
+			var newItemContainer = addItemDOM(list, list.getName(i));
+			setCrossedOffDOM(newItemContainer, list.getCrossedOff(i));
+		}	
+	}
+	
+	/************************
+		START
+	************************/
+	
+	// If using localStorage, populate shopping list with stored items
+	if (typeof(Storage) !== "undefined") {
+		populateStoredList(list);
 	}
 });
